@@ -72,9 +72,9 @@
   }
 
   .logo-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1.2rem;
     letter-spacing: -0.02em;
     color: #fff;
   }
@@ -89,7 +89,7 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: clamp(1.8rem, 5vw, 3rem);
     font-weight: 800;
     line-height: 1.1;
@@ -549,7 +549,6 @@
 
   <header>
     <div class="logo-row">
-      <div class="logo-mark">🌶</div>
       <span class="logo-name">Webolicious</span>
     </div>
     <div class="eyebrow">Pre-Launch · Quality Assurance</div>
@@ -601,9 +600,14 @@ const sections = [
       { label: "DNS records pointing to correct server (A / CNAME)", note: "Allow up to 48hrs for full propagation. Test with <a href='https://dnschecker.org' target='_blank'>dnschecker.org</a>.", priority: "critical" },
       { label: "SSL certificate installed and HTTPS enforced", note: "Check for mixed-content warnings in browser console. Test with <a href='https://www.ssllabs.com/ssltest/' target='_blank'>SSL Labs</a>.", priority: "critical" },
       { label: "www vs non-www redirect configured (pick one, redirect the other)", note: "Consistency matters for SEO and canonicalisation.", priority: "critical" },
+      { label: "Mail delivery configured correctly", note: "Use a reliable transactional mail service such as SMTP or Microsoft Graph API for Microsoft 365 instead of default PHP mail to improve deliverability, authentication and inbox placement.", priority: "critical" },
       { label: "Server response time under 200ms (TTFB)", note: "Test with <a href='https://gtmetrix.com' target='_blank'>GTmetrix</a> or <a href='https://tools.pingdom.com' target='_blank'>Pingdom</a>.", priority: "high" },
       { label: "Hosting environment matches production requirements (PHP version, memory limit)", note: "Common issues: PHP 8.x vs 7.x compatibility.", priority: "high" },
       { label: "Staging site taken offline or password-protected", note: "Avoid duplicate content issues.", priority: "high" },
+      { label: "HTTP/2 or HTTP/3 enabled", note: "Improves parallel asset loading and overall performance. Check with <a href='https://http3check.net' target='_blank'>http3check.net</a>.",  priority: "medium" },
+      { label: "GZIP or Brotli compression enabled", note: "Reduces HTML/CSS/JS transfer size significantly. Test in GTmetrix or browser DevTools.", priority: "high"},
+      { label: "Security headers configured", note: "Recommended headers include Content-Security-Policy, X-Frame-Options and Referrer-Policy. Test with <a href='https://securityheaders.com' target='_blank'>securityheaders.com</a>.", priority: "medium" },
+      { label: "PHP errors and debug mode disabled on production", note: "Disable WP_DEBUG and confirm no errors are publicly visible.", priority: "critical" },
     ]
   },
   {
@@ -614,10 +618,15 @@ const sections = [
       { label: "XML sitemap generated and accessible (e.g. /sitemap.xml)", note: "Use Yoast, RankMath, or a custom solution. Validate at <a href='https://www.xml-sitemaps.com/validate-xml-sitemap.html' target='_blank'>xml-sitemaps.com</a>.", priority: "critical" },
       { label: "Sitemap submitted to Google Search Console", note: "Also submit to <a href='https://www.bing.com/webmasters' target='_blank'>Bing Webmaster Tools</a>.", priority: "critical" },
       { label: "Google Search Console property verified", note: "Verify both www and non-www versions at <a href='https://search.google.com/search-console' target='_blank'>search.google.com/search-console</a>.", priority: "critical" },
+      { label: "Old URLs redirected to new URLs", note: "Ensure all legacy URLs are permanently redirected to their new equivalents using 301 redirects to preserve SEO value and avoid broken links.",  priority: "critical" },
       { label: "Bing Webmaster Tools verified", note: "Often overlooked — still worth doing. <a href='https://www.bing.com/webmasters' target='_blank'>bing.com/webmasters</a>.", priority: "high" },
       { label: "Canonical tags set correctly on all pages", note: "Especially important for paginated or filtered content.", priority: "high" },
       { label: "No orphan pages (every page reachable from navigation or internal links)", priority: "medium" },
       { label: "Hreflang tags set if site has multiple language/region versions", priority: "medium" },
+      { label: "Discourage search engines option disabled in WordPress", note: "Check Settings → Reading and ensure indexing is enabled before launch.", priority: "critical" },
+      { label: "404 errors checked before launch", note: "Crawl the site using Screaming Frog to identify broken internal links.", priority: "high" },
+      { label: "Open Graph URLs and canonical URLs match final live domain", note: "Common issue after migrations or staging clones.", priority: "medium" },
+      { label: "Pagination and filtered URLs handled correctly", note: "Avoid index bloat from search/filter parameters.", priority: "medium" },
     ]
   },
   {
@@ -645,6 +654,11 @@ const sections = [
       { label: "Lazy loading enabled for images below the fold", priority: "medium" },
       { label: "CDN configured (Cloudflare or equivalent)", priority: "medium" },
       { label: "No render-blocking resources in head", priority: "medium" },
+      { label: "Critical CSS implemented where appropriate", note: "Helps improve Largest Contentful Paint on mobile.", priority: "medium" },
+      { label: "Unused plugins, themes and scripts removed", note: "Reduces attack surface and unnecessary asset loading.", priority: "high" },
+      { label: "Third-party scripts audited", note: "Excessive tracking scripts are one of the biggest causes of poor mobile PageSpeed scores.", priority: "high" },
+      { label: "Hero images optimised separately for mobile", note: "Large desktop hero images often heavily impact mobile Core Web Vitals.", priority: "high" },
+      { label: "Critical assets preloaded where appropriate", note: "Preload key hero images, local fonts and above-the-fold assets carefully to improve LCP. Avoid excessive preloads as they can hurt performance.", priority: "medium" },
     ]
   },
   {
@@ -659,6 +673,10 @@ const sections = [
       { label: "Social share preview images set (Open Graph / Twitter Card)", note: "Test with <a href='https://www.linkedin.com/post-inspector/' target='_blank'>LinkedIn Post Inspector</a> and <a href='https://developers.facebook.com/tools/debug/' target='_blank'>Facebook Sharing Debugger</a>.", priority: "medium" },
       { label: "Font rendering consistent across browsers", priority: "medium" },
       { label: "Accessibility basics checked (colour contrast, keyboard nav)", note: "Quick scan with <a href='https://wave.webaim.org' target='_blank'>WAVE Accessibility Tool</a>.", priority: "high" },
+      { label: "Logo links back to homepage", priority: "low" },
+      { label: "No layout shifts during page load", note: "Check CLS issues caused by fonts, banners, embeds or delayed images.",  priority: "medium"},
+      { label: "Clickable elements have adequate spacing on mobile", note: "Important for usability and Google's mobile friendliness checks.", priority: "medium" },
+      { label: "Forms usable entirely via keyboard navigation", priority: "medium" },
     ]
   },
   {
@@ -666,7 +684,9 @@ const sections = [
     title: "Forms & Functionality",
     items: [
       { label: "All contact/quote/onboarding forms tested end-to-end", note: "Submit each form and confirm the email is received.", priority: "critical" },
+      { label: "Transactional emails authenticated with SPF, DKIM and DMARC", note: "Essential for inbox placement and preventing spoofing.", priority: "critical" },
       { label: "Form confirmation messages display correctly", priority: "high" },
+      { label: "Auto responders and confirmation emails tested", priority: "high" },
       { label: "Email notifications going to the correct inbox", note: "Check spam folder too. Test deliverability with <a href='https://www.mail-tester.com' target='_blank'>Mail-Tester</a>.", priority: "critical" },
       { label: "CAPTCHA or spam protection enabled on all forms", priority: "high" },
       { label: "Phone numbers and email addresses are clickable (tel: / mailto: links)", priority: "medium" },
@@ -694,6 +714,8 @@ const sections = [
       { label: "Google Ads conversion tracking active (if running PPC)", priority: "high" },
       { label: "Heatmap or session recording tool set up (Hotjar or Microsoft Clarity)", note: "<a href='https://clarity.microsoft.com' target='_blank'>Microsoft Clarity</a> is free and excellent.", priority: "medium" },
       { label: "Search Console linked to GA4", priority: "medium" },
+      { label: "GA4 internal traffic filters configured", note: "Exclude staff/admin visits from analytics data.", priority: "medium" },
+      { label: "Cross-domain tracking configured if needed", note: "Important for booking systems, payment gateways or external checkout flows.", priority: "medium" },
     ]
   },
   {
@@ -704,10 +726,14 @@ const sections = [
       { label: "Monitor Search Console for crawl errors in first 7 days", priority: "high" },
       { label: "Check site appears in Google for branded search within 2 weeks", priority: "high" },
       { label: "Set up uptime monitoring", note: "<a href='https://uptimerobot.com' target='_blank'>UptimeRobot</a> free tier is fine — alerts you immediately if the site goes down.", priority: "high" },
+      { label: "Test forms again after DNS propagation completes", note: "Mail routing issues sometimes appear only after propagation.", priority: "high" },
+      { label: "Run full crawl of live site after launch", note: "Use Screaming Frog or Sitebulb to identify unexpected issues.", priority: "high" },
       { label: "Backup solution confirmed and scheduled (daily recommended)", priority: "critical" },
       { label: "Share URL on Google Business Profile if local business", priority: "medium" },
       { label: "Announce launch on social media and via email newsletter", priority: "medium" },
       { label: "Note launch date — useful for comparing analytics trends later", priority: "medium" },
+      { label: "Monitor server logs after launch", note: "Useful for identifying bot attacks, 404s and PHP errors early.", priority: "medium" },
+      { label: "Check indexed pages count matches expectations", note: "Large discrepancies can indicate crawl or canonicalisation problems.", priority: "medium" },
     ]
   },
 ];
@@ -868,8 +894,8 @@ function downloadReport() {
 <title>Website Launch Report${client ? ' · ' + client : ''}</title>
 <style>
   body { font-family: Arial, sans-serif; color: #1e293b; margin: 0; padding: 2rem; font-size: 13px; }
-  .report-header { border-bottom: 3px solid #f97316; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-  .brand { font-size: 1.3rem; font-weight: 800; color: #f97316; }
+  .report-header { border-bottom: 3px solid #FF3972; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+  .brand { font-size: 1.3rem; font-weight: 800; color: #FF3972; }
   .report-title { font-size: 1.6rem; font-weight: 800; color: #0f172a; margin: 0.3rem 0 0.2rem; }
   .meta { color: #64748b; font-size: 0.8rem; }
   .summary { display: flex; gap: 1.5rem; margin: 1rem 0 1.5rem; }
@@ -894,7 +920,7 @@ function downloadReport() {
 </head>
 <body>
 <div class="report-header">
-  <div class="brand">🌶 Webolicious</div>
+  <div class="brand">Webolicious</div>
   <div class="report-title">Website Launch Checklist</div>
   <div class="meta">${client ? 'Prepared for: <strong>' + client + '</strong> &nbsp;·&nbsp; ' : ''}Report generated: ${date}</div>
 </div>
